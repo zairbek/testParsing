@@ -12,6 +12,7 @@ RUN apk update \
 
 COPY ./public/ /var/www/public/
 COPY .docker/nginx/ssl /etc/nginx/ssl
+COPY .docker/nginx/.htpasswd /etc/nginx/.htpasswd
 
 ADD .docker/nginx/startup.sh /opt/startup.sh
 RUN sed -i 's/\r//g' /opt/startup.sh
