@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ErrorInJobEvent;
+use App\Events\FailedParsingEvent;
+use App\Events\ParsingCompletedSuccessfullyEvent;
+use App\Listeners\DeleteUploadedFileListener;
+use App\Listeners\ErrorJobLogger;
+use App\Listeners\FailedParsingLogger;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +24,17 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        FailedParsingEvent::class => [
+            FailedParsingLogger::class,
+            DeleteUploadedFileListener::class,
+        ],
+        ErrorInJobEvent::class => [
+            ErrorJobLogger::class,
+            DeleteUploadedFileListener::class,
+        ],
+        ParsingCompletedSuccessfullyEvent::class => [
+            DeleteUploadedFileListener::class,
+        ]
     ];
 
     /**
