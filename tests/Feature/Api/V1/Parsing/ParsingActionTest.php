@@ -2,13 +2,18 @@
 
 declare(strict_types=1);
 
+namespace Tests\Feature\Api\V1\Parsing;
+
 use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ParsingActionTest extends TestCase
 {
     public function testSuccessfully(): void
     {
+        Storage::fake('local');
+
         $content = file_get_contents(base_path('tests/Mocks/Files/test.xlsx'));
         $file = File::createWithContent('test.xlsx', $content);
 
@@ -16,7 +21,7 @@ class ParsingActionTest extends TestCase
             'file' => $file
         ]);
 
-        $response->assertSuccessful();
+        $response->assertStatus(202);
     }
 
     /**
