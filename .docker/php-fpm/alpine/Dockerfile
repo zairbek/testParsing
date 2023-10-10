@@ -23,6 +23,21 @@ RUN if [ ${INSTALL_ZIP} = true ]; then \
 ;fi
 
 ###########################################################################
+# GD:
+###########################################################################
+ARG INSTALL_GD=true
+
+RUN if [ ${INSTALL_GD} = true ]; then \
+    apk add \
+        libpng-dev \
+        libwebp-dev \
+        libjpeg-turbo-dev \
+        freetype-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd \
+;fi
+
+###########################################################################
 # Composer:
 ###########################################################################
 ARG INSTALL_COMPOSER=true
