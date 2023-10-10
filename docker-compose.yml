@@ -38,19 +38,19 @@ services:
 #      networks:
 #        - backend
 
-    queue:
-      build:
-        context: .
-        dockerfile: .docker/php-fpm/alpine/Dockerfile
-      volumes:
-        - .:/var/www
-      environment:
-        APP_ENV: local
-        CONTAINER_ROLE: queue
-      networks:
-        - backend
-      depends_on:
-        - postgres
+#    queue:
+#      build:
+#        context: .
+#        dockerfile: .docker/php-fpm/alpine/Dockerfile
+#      volumes:
+#        - .:/var/www
+#      environment:
+#        APP_ENV: local
+#        CONTAINER_ROLE: queue
+#      networks:
+#        - backend
+#      depends_on:
+#        - postgres
 
 
 ### NGINX Server #########################################
@@ -100,5 +100,17 @@ services:
       image: adminer
       ports:
         - 8080:8080
+      networks:
+        - backend
+
+    redis-ui:
+      image: erikdubbelboer/phpredisadmin
+      environment:
+        - ADMIN_USER=admin
+        - ADMIN_PASS=1234
+        - REDIS_1_HOST=redis
+        - REDIS_1_PORT=6379
+      ports:
+        - 8081:80
       networks:
         - backend
